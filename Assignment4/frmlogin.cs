@@ -44,7 +44,10 @@ namespace Assignment4
             OleDbCommand command = new OleDbCommand(); // Creating a new OleDbCommand object
             command.Connection = connection; //associating the new OleDbcommand with the OleDbConnection object
 
-            command.CommandText = "SELECT * FROM tblStudents WHERE UserName='" + txtUserName.Text + "' AND Password ='" + txtPassword.Text + "'";   // Setting the SQL query to select records from the tblStudents table based on the entered username and password
+            // OleDb uses positional parameters. Keep input out of the SQL statement.
+            command.CommandText = "SELECT * FROM tblStudents WHERE [UserName] = ? AND [Password] = ?";
+            command.Parameters.AddWithValue("@username", txtUserName.Text);
+            command.Parameters.AddWithValue("@password", txtPassword.Text);
 
             OleDbDataReader reader = command.ExecuteReader();  // Executing the SQL query and retrieving the results using an OleDbDataReader
 
